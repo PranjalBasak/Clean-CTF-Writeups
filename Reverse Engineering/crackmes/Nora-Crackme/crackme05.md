@@ -96,3 +96,11 @@ usr_input[8:12] = keygen(4, 5, ord('Z')) # Same here, anything goes
 usr_input[12:16] = keygen(4, 4, ord('Q')) # Since usr_input[13] = 'Q'
 print("".join(usr_input))
 ```
+
+## Output
+```
+BBBBZZZZZZZZQQQQ
+```
+
+## Final Demonstration
+![alt text](image.png)

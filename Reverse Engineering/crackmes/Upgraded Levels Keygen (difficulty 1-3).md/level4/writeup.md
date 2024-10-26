@@ -127,3 +127,32 @@ func_first_gate(
 ```C
 char passed_to_func [4];
 ```
+
+
+```C
+func_second_gate(
+    success_msg,
+    failure_msg,
+    rand_1,
+    rand_1 + symbol_dance_element,
+    symbol_rain,
+    passed_to_func,
+    usr_input,
+    rand_3,
+    *(undefined8 *)(magic_yapping_at_rand_3 + (long)rand_3 * 8));
+```
+
+```C
+    func_third_gate(
+        success_msg,
+        failure_msg,
+        rand_1,
+        rand_1 + rand_1_plus_sym_dance_elem,
+        symbol_rain,
+        passed_to_func,
+        usr_input,
+        2,
+        7,
+        4,
+        8);
+```
