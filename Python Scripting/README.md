@@ -98,3 +98,110 @@ for pw in gen:
        print("Failure:", pw_f)
 
 ```
+
+# Default UTF-8 String to Byte Object
+```python
+s = "Hello World" # Encode it using UTF-8 into a byte object
+print(s.encode()) #b'Hello World'
+```
+
+```python
+print(bytes('a', 'utf-8')) # b'a'
+print('a'.encode('utf-8')) # b'a'
+```
+
+# Byte Array
+Array of Bytes (Just like a C string) But every byte is stored as an int value
+```python
+s = "Hello World"
+b_arr = bytearray(s, 'utf-8') # bytearray(source, encoding)
+print(b_arr) # bytearray(b'Hello World')
+print(type(b_arr[0])) # <class 'int'>
+```
+
+Convert a list into a byte array
+```python
+lst = [1, 2, 3]
+b_arr = bytearray(lst) 
+print(b_arr) # bytearray(b'\x01\x02\x03')
+```
+
+# Byte Array Methods
+```python
+b_arr.append(48)
+b_arr.extend(b'abc')
+b_arr.extend('hello world'.encode())
+```
+
+# Find MD5 Hash of A String
+```python
+import hashlib
+
+s = "Hello World"
+b_arr = bytearray()
+b_arr.extend(s.encode())
+print(b_arr) # bytearray(b'Hello World')
+m = hashlib.md5()
+m.update(b_arr)
+h_digest = m.hexdigest()
+digest = m.digest()
+print(h_digest) # b10a8db164e0754105b7a99be72e3fe5
+print(digest) # b'\xb1\n\x8d\xb1d\xe0uA\x05\xb7\xa9\x9b\xe7.?\xe5'
+```
+
+# Byte Array to Byte Object
+
+```python
+a_arr = bytearray(b'\xb1\n\x8d\xb1d\xe0uA\x05\xb7\xa9\x9b\xe7.?\xe5')
+a_obj = bytes(a_arr)
+print(a_obj) # b'\xb1\n\x8d\xb1d\xe0uA\x05\xb7\xa9\x9b\xe7.?\xe5'
+```
+
+# Byte Object to Byte Array
+
+```python
+b_obj = b'\xb1\n\x8d\xb1d\xe0uA\x05\xb7\xa9\x9b\xe7.?\xe5'
+b_arr = bytearray(b_obj) # bytearray(b'\xb1\n\x8d\xb1d\xe0uA\x05\xb7\xa9\x9b\xe7.?\xe5')
+print(b_arr)
+```
+
+# Important Point
+Neither bytes nor byte array are null terminated like C strings
+
+# Reading A Binary File
+```python
+enc_flag_file = open("level4.flag.txt.enc", "rb") # A file pointer to the encrypted flag file
+hashed_correct_pw_file = open("level4.hash.bin", "rb") # A file pointer to the hashed flag file
+
+enc_flag = enc_flag_file.read() # Read the encrypted file and get bytes object
+hashed_correct_pw = hashed_correct_pw_file.read() # Read the hashed password and get bytes object
+```
+
+# Different Ways of Seeing Bytes
+```python
+b_str = b'\n\x07\x04\x14\x0c\x15\x08\x06\x03\x07\x1b'
+for c in b_str:
+    print(f"\\x{hex(c)[2:]}", end="") # \xa\x7\x4\x14\xc\x15\x8\x6\x3\x7\x1b
+print("\n")
+for c in b_str:
+    print(f"{hex(c)[2:]:02}", end=" ") # a0 70 40 14 c0 15 80 60 30 70 1b
+```
+
+# Basic XOR Encryption
+```python
+import sys
+def str_xor(secret, key):
+    new_key = key
+    i = 0
+    while len(new_key) < len(secret):
+        new_key = new_key + key[i] # Pad/Expand the key to match the secret string
+        i = (i + 1) % len(key)
+    return "".join(chr(ord(secret_c) ^ ord(new_key_c)) for (secret_c,new_key_c) in zip(secret, new_key))
+
+
+secret = 'humangasaur'
+key = 'briu'
+print(bytes(str_xor(secret, key), 'utf-8')) # b'\n\x07\x04\x14\x0c\x15\x08\x06\x03\x07\x1b'
+```
+
+
