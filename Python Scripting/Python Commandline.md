@@ -44,3 +44,47 @@ args = parser.parse_args()
 if len(args.add) != 0:
     print(sum(args.add))
 ```
+
+# Basic String to Hex Converter Tool
+```python
+import argparse
+import os
+
+def generate_hex_bytes(s):
+    output = [hex(ord(c))[2:] for c in s]
+    return " ".join(output)
+
+def write_to_file(usr_inp, terminal_output_list, file_name):
+    #print(f"{s}: Will write to file")
+    print("Writing to file for: % s" % ", ".join(usr_inp))
+    if os.path.isfile(file_name):
+        os.remove(file_name)
+    f = open(file_name, "a")
+    f.write("Author: Pranjal Basak\n")
+    f.write("--------------------------\n"*2)
+    for (usr,line) in zip(usr_inp, terminal_output_list):
+        f.write(f"{usr:{1+max(map(len, usr_inp))}}: {line}\n")
+    f.close()
+    f = open(file_name, "r")
+    print("Wrote:", f.readlines())
+
+
+def arg_handler():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("hex", nargs="*", metavar="string", help="Converts your string into hex bytes")
+    parser.add_argument("-o", nargs=1, metavar="output_file", help="Specify the output file name")
+    args = parser.parse_args()
+    #print(args.hex)
+    if not args.o:
+        for i in range(len(args.hex)):
+            terminal_output = generate_hex_bytes(args.hex[i])
+            print(f"{args.hex[i]}: {terminal_output}")
+    else:
+        terminal_output_list = map(generate_hex_bytes, args.hex)
+        write_to_file(args.hex, terminal_output_list, args.o[0])
+
+
+
+if __name__=="__main__":
+    arg_handler()
+```
